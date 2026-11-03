@@ -55,7 +55,7 @@ $sourceItems = @(
   "app", "public", "scripts", "tests", "worker", "build", ".openai",
   "package.json", "package-lock.json", "release-info.json", "tsconfig.json", "vite.config.ts", "next.config.ts",
   "eslint.config.mjs", "postcss.config.mjs", "README.md", "QUICKSTART.txt",
-  "DESIGN_V02.md", "MECHANICS_AUDIT.md", "WORKLOG_V02.md", "MAP_ART_SPEC.md",
+  "DESIGN_V02.md", "MECHANICS_AUDIT.md", "MAP_ART_SPEC.md",
   $releaseInfo.releaseNotes
 )
 foreach ($item in $sourceItems) {
