@@ -6,7 +6,7 @@ export function PwaRegistration() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
     const register = () => {
-      void navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" })
+      void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => undefined);
     };

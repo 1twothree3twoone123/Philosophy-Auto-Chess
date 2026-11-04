@@ -32,14 +32,16 @@ This repository contains the source for **v0.2**, developed by **折射棱镜**.
 
 ## How to run
 
-Requirements: Node.js 22.13 or newer.
+The game runs entirely in the browser; saves live in that browser's local storage. Any OS with Node.js 22.13 or newer works.
 
 ```bash
 npm install
-npm run dev
+npm start
 ```
 
-Open `http://127.0.0.1:3000` if it does not open automatically.
+Then open `http://localhost:5173/`. The port is fixed because browser saves belong to the exact address. To play from a phone or tablet on the same network, run `npm start -- --host` and open the network address it prints.
+
+For development with live reload, use `npm run dev` (same address). `npm run build` writes a static site to `dist/` that any static file server can host.
 
 Run the complete quality gate with:
 
@@ -47,26 +49,25 @@ Run the complete quality gate with:
 npm test
 ```
 
-The test command runs TypeScript checking, ESLint, a production build, deterministic engine tests and rendered-HTML structure tests.
+The test command runs TypeScript checking, ESLint, a production build, deterministic engine tests and static-build structure tests.
 
 ## Project structure
 
-- `app/page.tsx` — application entry point
+- `static-web/` — browser entry point (`index.html`, `main.tsx`)
 - `app/game/GameClient.tsx` — main game interface
 - `app/game/engine.ts` — economy, roster, preparation and durable state
 - `app/game/combat-core.ts` — deterministic combat primitives and snapshots
 - `app/game/battle.ts` — wave simulation, blocking, bosses and combat resolution
 - `app/game/positions.ts` — frozen 1600×900 map coordinates and stable IDs
-- `tests/` — engine, rendering, browser interaction and release smoke tests
+- `tests/` — engine, static-build, browser interaction and GitHub Pages smoke tests
 - `scripts/` — balance simulation, map export and asset generation
 
 ## Built with
 
 - TypeScript
 - React 19
-- vinext and Vite
+- Vite
 - Node.js
-- Cloudflare Vite tooling
 - Node's built-in test runner
 
 ## Demo notes

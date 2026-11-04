@@ -65,8 +65,10 @@ const userData = await mkdtemp(path.join(tmpdir(), "philosophy-pages-chrome-"));
 const preview = spawn(process.execPath, [
   path.join(root, "node_modules", "vite", "bin", "vite.js"),
   "preview",
-  "--config",
-  "vite.pages.config.ts",
+  "--base",
+  "/Philosophy-Auto-Chess/",
+  "--outDir",
+  "../dist-pages",
   "--host",
   "127.0.0.1",
   "--port",

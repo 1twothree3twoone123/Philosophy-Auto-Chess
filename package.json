@@ -6,10 +6,10 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "build:pages": "vite build --config vite.pages.config.ts",
-    "start": "vinext start",
+    "dev": "vite",
+    "build": "vite build",
+    "build:pages": "vite build --base /Philosophy-Auto-Chess/ --outDir ../dist-pages",
+    "start": "vite build && vite preview",
     "typecheck": "tsc --noEmit",
     "typecheck:tools": "tsc --noEmit -p tsconfig.tools.json",
     "test": "npm run typecheck && npm run typecheck:tools && npm run lint && npm run build && node --import tsx --test tests/game-engine.test.ts tests/rendered-html.test.mjs",

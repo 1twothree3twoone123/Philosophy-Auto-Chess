@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "philosophy-auto-chess-offline-";
 const CACHE_NAME = `${CACHE_PREFIX}v2`;
-const OFFLINE_ASSETS = ["/offline.html", "/pwa-icon-192.png", "/pwa-icon-512.png"];
+// Relative to this script, so the worker also runs under a sub-path such as GitHub Pages.
+const OFFLINE_ASSETS = ["offline.html", "pwa-icon-192.png", "pwa-icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(OFFLINE_ASSETS)).then(() => self.skipWaiting()));
@@ -16,5 +17,5 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.mode !== "navigate") return;
-  event.respondWith(fetch(event.request).catch(() => caches.match("/offline.html")));
+  event.respondWith(fetch(event.request).catch(() => caches.match("offline.html")));
 });

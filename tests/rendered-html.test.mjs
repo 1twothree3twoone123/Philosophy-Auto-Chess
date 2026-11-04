@@ -1,77 +1,39 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import releaseInfo from "../release-info.json" with { type: "json" };
 
-async function render(pathname = "/", headers = { accept: "text/html" }) {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+const distRoot = new URL("../dist/", import.meta.url);
 
-  return worker.fetch(
-    new Request(`http://localhost${pathname}`, {
-      headers,
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+async function builtEntry() {
+  const html = await readFile(new URL("index.html", distRoot), "utf8");
+  const script = html.match(/<script type="module" crossorigin src="\/(assets\/[^"]+\.js)"/)?.[1];
+  assert.ok(script, "the static entry must load one bundled module script");
+  return { html, bundle: await readFile(new URL(script, distRoot), "utf8") };
 }
 
-test("production worker exposes unified, desktop, mobile and release-contract routes", async () => {
-  for (const pathname of ["/", "/?ui=desktop", "/?ui=mobile", "/desktop", "/mobile"]) {
-    const response = await render(pathname);
-    assert.equal(response.status, 200, `${pathname} must remain a valid player entry`);
-    assert.match(await response.text(), /往哲荣耀/);
+test("static build emits one browser entry with its public assets", async () => {
+  const { html } = await builtEntry();
+  assert.match(html, /<div id="root"><\/div>/);
+  assert.match(html, /<link rel="stylesheet" crossorigin href="\/assets\/[^"]+\.css">/);
+  for (const asset of ["favicon.svg", "pwa-icon-192.png", "assets/characters/plato.webp", "assets/audio/ui-deploy.wav"]) {
+    await access(new URL(asset, distRoot));
   }
-
-  const healthResponse = await render("/api/health", { accept: "application/json" });
-  assert.equal(healthResponse.status, 200);
-  assert.equal(healthResponse.headers.get("cache-control"), "no-store");
-  const health = await healthResponse.json();
-  assert.equal(health.status, "ok");
-  assert.equal(health.version, "v0.2");
-
-  const releaseResponse = await render("/api/release", { accept: "application/json" });
-  assert.equal(releaseResponse.status, 200);
-  const release = await releaseResponse.json();
-  assert.equal(release.release.version, "0.2.0");
-  assert.equal(release.compatibility.saveVersion, 7);
-  assert.equal(release.compatibility.profileVersion, 3);
-  assert.match(release.play.desktop, /\/desktop$/);
-  assert.match(release.play.mobile, /\/mobile$/);
 });
 
-test("server-renders the Philosophy Auto Chess landing screen", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
+test("bundles the Philosophy Auto Chess landing screen", async () => {
+  const { html, bundle } = await builtEntry();
   assert.match(html, new RegExp(`<title>${releaseInfo.productName} · ${releaseInfo.englishName} · ${releaseInfo.displayVersion} · ${releaseInfo.developer}<\\/title>`, "i"));
-  assert.match(html, /PHILOSOPHY AUTO CHESS \/ V0\.2/);
-  assert.match(html, /折射棱镜开发/);
-  assert.match(html, /理念档案/);
-  assert.match(html, /当前 25 名棋子全部开放/);
-  assert.match(html, /作战任务/);
-  assert.match(html, /main-menu-atmosphere/);
-  assert.match(html, /main-menu-sigil/);
-  assert.match(html, /开始往哲荣耀/);
-  assert.match(html, /本版新增/);
-  assert.match(html, /历史事件与意识形态选择/);
-  assert.match(html, /兼容旧版局内存档与局外档案/);
+  for (const text of [releaseInfo.developer, "理念档案", "当前 25 名棋子全部开放", "作战任务", "main-menu-atmosphere", "main-menu-sigil", "开始往哲荣耀", "本版新增", "历史事件与意识形态选择", "兼容旧版局内存档与局外档案"]) {
+    assert.ok(bundle.includes(text), `landing screen must include ${text}`);
+  }
+  assert.match(bundle, /PHILOSOPHY AUTO CHESS/);
 });
 
 test("keeps game presentation and replaceable assets scoped", async () => {
-  const [page, layout, client, battleInspector, combatStatus, assets, combatCss, dragSafety, readability, taskUi, mapArt, positions, browserInteractions] = await Promise.all([
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+  const [entry, entryHtml, client, battleInspector, combatStatus, assets, combatCss, dragSafety, readability, taskUi, mapArt, positions, browserInteractions] = await Promise.all([
+    readFile(new URL("../static-web/main.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../static-web/index.html", import.meta.url), "utf8"),
     readFile(new URL("../app/game/GameClient.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/game/BattleInspector.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/game/CombatStatus.tsx", import.meta.url), "utf8"),
@@ -85,11 +47,11 @@ test("keeps game presentation and replaceable assets scoped", async () => {
     readFile(new URL("./browser-interactions.mjs", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /resolveGamePlatform/);
-  assert.match(page, /<MobileGameExperience \/>/);
-  assert.match(page, /<DesktopGameExperience \/>/);
-  assert.match(layout, /title:/);
-  assert.match(layout, /combat-ui\.css/);
+  assert.match(entry, /automaticMobile/);
+  assert.match(entry, /<MobileGameExperience \/>/);
+  assert.match(entry, /<DesktopGameExperience \/>/);
+  assert.match(entryHtml, /<title>/);
+  assert.match(entry, /combat-ui\.css/);
   assert.match(client, /WaveForecast/);
   assert.match(client, /dragTerrain/);
   assert.match(client, /activeTerrain/);
@@ -186,16 +148,16 @@ test("keeps game presentation and replaceable assets scoped", async () => {
   assert.match(client, /className="tempo-button"/);
   assert.doesNotMatch(client, /战斗中可购买|买走留空|波次后补货|出售为折价回收/);
   assert.doesNotMatch(client, /economy panel[^\n]*selection-dock/);
-  assert.match(layout, /map-art\.css/);
+  assert.match(entry, /map-art\.css/);
   assert.match(mapArt, /viewBox="0 0 1600 900"/);
   assert.match(mapArt, /routeDefinitions/);
   assert.match(positions, /DEPLOYMENT_SLOT_IDS/);
   assert.doesNotMatch(mapArt, /concept-map|backgroundSize|background-size\s*:/);
   assert.doesNotMatch(client, /<details className="debug-panel/);
   assert.match(combatCss, /operation-grid[^}]*display:none/);
-  assert.match(layout, /drag-safety\.css/);
-  assert.match(layout, /readability\.css/);
-  assert.match(layout, /task-ui\.css/);
+  assert.match(entry, /drag-safety\.css/);
+  assert.match(entry, /readability\.css/);
+  assert.match(entry, /task-ui\.css/);
   assert.match(dragSafety, /\.map-art[^}]*pointer-events:none/);
   assert.match(dragSafety, /\.operation-grid[^}]*pointer-events:none/);
   assert.match(dragSafety, /\.deploy-grid \.slot[^}]*pointer-events:auto/);

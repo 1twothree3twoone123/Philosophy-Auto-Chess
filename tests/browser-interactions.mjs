@@ -11,7 +11,8 @@ const chromePath = process.env.CHROME_PATH
   ?? (process.platform === "darwin"
     ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     : "/usr/bin/google-chrome");
-const remotePort = port + 1000;
+// Offset clear of the game's fixed play port (5173) so tests can run while someone plays.
+const remotePort = port + 2000;
 const artifacts = path.join(root, "artifacts");
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -60,9 +61,9 @@ async function connectCdp(webSocketDebuggerUrl) {
 
 async function main() {
   const userData = await mkdtemp(path.join(tmpdir(), "idea-garrison-chrome-"));
-  const server = spawn(process.execPath, [path.join(root, "node_modules", "vinext", "dist", "cli.js"), "dev", "--host", "127.0.0.1", "--port", String(port), "--strictPort"], {
+  const server = spawn(process.execPath, [path.join(root, "node_modules", "vite", "bin", "vite.js"), "--host", "127.0.0.1", "--port", String(port), "--strictPort"], {
     cwd: root,
-    env: { ...process.env, BROWSER: "none", WRANGLER_LOG_PATH: path.join(root, ".wrangler", "wrangler.log") },
+    env: { ...process.env, BROWSER: "none" },
     shell: false,
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -75,7 +76,7 @@ async function main() {
     await waitFor(async () => {
       const response = await fetch(baseUrl);
       return response.ok;
-    }, "vinext development server", 45_000);
+    }, "Vite development server", 45_000);
 
     chrome = spawn(chromePath, [
       "--headless=new",

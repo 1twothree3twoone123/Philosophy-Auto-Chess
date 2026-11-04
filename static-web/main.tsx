@@ -10,6 +10,7 @@ import "../app/game/task-ui.css";
 import "../app/game/mobile.css";
 import { audioAssets } from "../app/game/audio";
 import { characterAssets, mapAssets } from "../app/game/assets";
+import { PwaRegistration } from "../app/game/PwaRegistration";
 import { DesktopGameExperience } from "../app/game/platform/DesktopGameExperience";
 import { MobileGameExperience } from "../app/game/platform/MobileGameExperience";
 
@@ -31,9 +32,10 @@ for (const asset of Object.values(audioAssets.music)) {
 
 const locationUrl = new URL(window.location.href);
 const requestedUi = locationUrl.searchParams.get("ui");
-const pathMode = locationUrl.pathname.endsWith("/mobile/")
+const pathname = locationUrl.pathname.replace(/\/+$/, "");
+const pathMode = pathname.endsWith("/mobile")
   ? "mobile"
-  : locationUrl.pathname.endsWith("/desktop/")
+  : pathname.endsWith("/desktop")
     ? "desktop"
     : undefined;
 const automaticMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
@@ -57,6 +59,7 @@ const root = document.getElementById("root");
 if (!root) throw new Error("Static game root is missing.");
 createRoot(root).render(
   <React.StrictMode>
+    <PwaRegistration />
     {platform === "mobile" ? <MobileGameExperience /> : <DesktopGameExperience />}
   </React.StrictMode>,
 );
