@@ -13,11 +13,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "paths": {
       "@/*": ["./*"]
     }
@@ -28,5 +23,5 @@
     "static-web/**/*.tsx",
     "vite.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "release", "work", ".runtime", ".wrangler"]
+  "exclude": ["node_modules", "dist", "dist-pages", "release", "work", ".runtime"]
 }

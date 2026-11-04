@@ -11,10 +11,6 @@ node_modules/
 # Production and framework output
 dist/
 dist-pages/
-.next/
-.vinext/
-out/
-.wrangler/
 coverage/
 *.tsbuildinfo
 
@@ -27,7 +23,6 @@ work/
 .npm-cache/
 *.log
 *.pid
-.idea-garrison-server.log
 
 # Local Codex and editor state
 .agents/

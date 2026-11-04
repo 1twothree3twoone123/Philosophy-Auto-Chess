@@ -1,8 +1,3 @@
-"use client";
-
-/* eslint-disable @next/next/no-img-element -- Stable runtime art URLs are already resized WebP assets; native img preserves the existing drag-card owner. */
-/* eslint-disable @next/next/no-html-link-for-pages -- UI mode links intentionally reload through server-side platform negotiation while preserving same-origin local saves. */
-
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { BOSS_PHASES_BY_KIND, advanceBattle, battleOf, bossPhasesFor, effectiveAttackRange, enemyTemplates, isBossKind, isFinalBossKind, MAX_WAVES, philosopherKingEffectMultiplier, restartCurrentWave, retryWave, startWave, type BattleState, type Enemy } from "./battle";
 import { characterById, characters } from "./characters";

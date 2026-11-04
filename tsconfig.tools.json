@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "incremental": false,
-    "allowImportingTsExtensions": true,
-    "plugins": []
+    "allowImportingTsExtensions": true
   },
   "include": [
     "app/**/*.ts",

@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 const DISMISS_KEY = "philosophy-auto-chess-landscape-hint-dismissed";

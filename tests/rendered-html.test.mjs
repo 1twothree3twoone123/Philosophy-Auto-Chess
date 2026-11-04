@@ -303,7 +303,7 @@ test("keeps game presentation and replaceable assets scoped", async () => {
   assert.match(dragSafety, /tempo-button/);
   assert.match(dragSafety, /drag-sell-zone/);
   assert.match(dragSafety, /bench-sell-zone\{inset:0 0 0 calc\(48% \+ 10px\);width:auto;height:auto;min-height:0/);
-  assert.match(dragSafety, /shop\.shop--sell-target::after\{content:"◇  拖入出售\\A折价回收"/);
+  assert.match(dragSafety, /shop\.shop--sell-target::after\{content:"◇ {2}拖入出售\\A折价回收"/);
   assert.match(readability, /unit-name strong\{font-size:max\(\.76cqw,8px\)!important/);
   assert.match(readability, /game-shell--showcase\{[^}]*height:auto!important;[^}]*min-height:100dvh!important;[^}]*max-height:none!important;[^}]*overflow-y:visible!important/, "desktop zoom must grow the document instead of clipping it to one viewport");
   assert.match(readability, /aspect-ratio:16\/9!important/, "readability changes preserve the 1600 by 900 combat coordinate ratio");
@@ -317,9 +317,9 @@ test("keeps game presentation and replaceable assets scoped", async () => {
   const economyDeckStart = client.indexOf('<section className={`economy-deck');
   assert.ok(mapFieldStart >= 0 && mapPanelClose > mapFieldStart, "map field closes before the command rail");
   assert.ok(economyDeckStart > mapPanelClose, "economy deck is outside the map overlay container");
-  assert.match(client, /<section className=\{\`economy-deck/);
+  assert.match(client, /<section className=\{`economy-deck/);
   assert.match(client, /<section data-tutorial="bench" className="bench panel"/);
-  assert.match(client, /<section data-tutorial="shop" className=\{\`shop panel/);
+  assert.match(client, /<section data-tutorial="shop" className=\{`shop panel/);
   assert.match(client, /<b>人口 \{state\.pieces\.filter/, "population is labeled inside the prominent value, not only in secondary copy");
   assert.match(client, /TUTORIAL_STEPS[^]*购买经验提升等级/);
   assert.match(client, /localStorage\.setItem\(TUTORIAL_KEY, "complete"\)/, "tutorial completion persists independently from the game save");

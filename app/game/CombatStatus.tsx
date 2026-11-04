@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { enemyTemplates, type BattleState, type BattleSummary, type Enemy } from "./battle";
 import { characterById } from "./characters";

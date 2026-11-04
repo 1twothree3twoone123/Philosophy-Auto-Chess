@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect } from "react";
 
 export type GamePlatform = "desktop" | "mobile";
