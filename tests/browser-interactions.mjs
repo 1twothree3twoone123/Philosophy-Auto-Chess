@@ -8,7 +8,9 @@ const root = path.resolve(import.meta.dirname, "..");
 const port = Number(process.env.IDEA_GARRISON_E2E_PORT ?? 4173);
 const baseUrl = `http://127.0.0.1:${port}/?devtools=1`;
 const chromePath = process.env.CHROME_PATH
-  ?? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+  ?? (process.platform === "darwin"
+    ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    : "/usr/bin/google-chrome");
 const remotePort = port + 1000;
 const artifacts = path.join(root, "artifacts");
 

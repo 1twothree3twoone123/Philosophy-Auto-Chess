@@ -22,6 +22,6 @@
 
 可复现命令：
 
-```powershell
+```bash
 node scripts/process-framed-character-art.mjs --source=work/art-source/germany-britain-v1/<character-id>-full.png --out=public/assets/characters/<character-id>.webp --size=512 --padding=8 --threshold=42
 ```

@@ -9,8 +9,8 @@ const previewPort = Number(process.env.PAGES_PREVIEW_PORT ?? 43191);
 const debugPort = previewPort + 1000;
 const baseUrl = `http://127.0.0.1:${previewPort}/Philosophy-Auto-Chess/`;
 const chromePath = process.env.CHROME_PATH
-  ?? (process.platform === "win32"
-    ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  ?? (process.platform === "darwin"
+    ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     : "/usr/bin/google-chrome");
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 

@@ -17,6 +17,6 @@
 
 可复现命令：
 
-```powershell
+```bash
 python scripts/process-character-art.py --source work/art-source/france-v1/<character-id>-full.png --out public/assets/characters/<character-id>.webp --crop 0,0,2048,2048 --size 512 --framed-art --frame-padding 8
 ```

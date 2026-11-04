@@ -60,9 +60,9 @@
 
 ## 复现与检查
 
-```powershell
-npm.cmd run generate:audio
-npm.cmd test
+```bash
+npm run generate:audio
+npm test
 ```
 
 `generate:audio` 会重建全部 WAV，并在峰值、RMS、高频能量或 DC 偏移超出门禁时

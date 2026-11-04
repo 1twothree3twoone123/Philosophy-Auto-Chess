@@ -5,7 +5,5 @@
   "versionId": "v0.2",
   "displayVersion": "v0.2",
   "developer": "折射棱镜开发",
-  "launcherName": "启动往哲荣耀.cmd",
-  "releaseNotes": "RELEASE_NOTES_v0.2.md",
-  "artifactBase": "philosophy-auto-chess-v0.2"
+  "releaseNotes": "RELEASE_NOTES_v0.2.md"
 }

@@ -32,25 +32,19 @@ This repository contains the source for **v0.2**, developed by **折射棱镜**.
 
 ## How to run
 
-### Portable Windows Demo
+Requirements: Node.js 22.13 or newer.
 
-Download the Windows portable ZIP from the repository's **Releases** page, extract the entire archive, and double-click `启动往哲荣耀.cmd` or `start-game.cmd`. The portable build includes its own Node runtime and does not require a development environment.
-
-### Development
-
-Requirements: Windows and Node.js 22.13 or newer.
-
-```powershell
-npm.cmd install
-npm.cmd run dev
+```bash
+npm install
+npm run dev
 ```
 
 Open `http://127.0.0.1:3000` if it does not open automatically.
 
 Run the complete quality gate with:
 
-```powershell
-npm.cmd test
+```bash
+npm test
 ```
 
 The test command runs TypeScript checking, ESLint, a production build, deterministic engine tests and rendered-HTML structure tests.
@@ -64,7 +58,7 @@ The test command runs TypeScript checking, ESLint, a production build, determini
 - `app/game/battle.ts` — wave simulation, blocking, bosses and combat resolution
 - `app/game/positions.ts` — frozen 1600×900 map coordinates and stable IDs
 - `tests/` — engine, rendering, browser interaction and release smoke tests
-- `scripts/` — balance simulation, map export and portable packaging
+- `scripts/` — balance simulation, map export and asset generation
 
 ## Built with
 

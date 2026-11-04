@@ -27,4 +27,4 @@
 - 顶部 72 px 为提示安全区，不放入口名称、关键地标或不可替代的美术信息。
 - 最终美术应按 1600 × 900 原尺寸交付；透明校验层必须能以 `(0,0)` 无偏移叠加验证。
 
-施工包由 `npm.cmd run export:map-art` 直接读取 `app/game/positions.ts` 生成，不允许人工重描坐标。
+施工包由 `npm run export:map-art` 直接读取 `app/game/positions.ts` 生成，不允许人工重描坐标。

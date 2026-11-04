@@ -46,4 +46,4 @@ Open **Settings → Feedback Tools** to copy or export the balance report. Usefu
 
 ## Validation baseline
 
-The release baseline passes TypeScript, ESLint, production build, deterministic engine tests, rendered-HTML tests and a clean-profile portable release smoke test.
+The release baseline passes TypeScript, ESLint, production build, deterministic engine tests, and rendered-HTML tests.
